@@ -1,0 +1,3 @@
+[submodule "PeripheralTemplateLibrary"]
+	path = PeripheralTemplateLibrary
+	url = https://github.com/pfalcon/PeripheralTemplateLibrary.git
