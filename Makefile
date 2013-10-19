@@ -1,4 +1,4 @@
-PTL_PATH = ../PeripheralTemplateLibrary
+PTL_PATH = PeripheralTemplateLibrary
 include $(PTL_PATH)/Makefile.rules
 
 ALL = simplejtag_l0
