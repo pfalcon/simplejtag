@@ -1,0 +1,66 @@
+SimpleJTAG is an JTAG/SWD adapter protocol designed to be easy implementable
+on (almost) any hardware, targeting first of all low-cost and open-hardware
+development boards like Arduino and MSP430 Launchpad.
+
+SimpleJTAG is expected to provide several levels of protocol, offering
+different ratio of ease of firmware development vs target access speed.
+Currently, "level 0" protocol is defined, which uses the simplest possible
+bitbanging protol, where each signal transition is driven by host. It is also
+half-duplex, following request-response pattern for each command. So, it
+is slow, but at the same time, can be implemented even on the simplest
+MCUs, with minimum flash space, and with bitbang UART implementation for
+connection to host.
+
+This project provides MCU and board independent implementation of protocol
+developed using Peripheral Template Library (PTL)
+(https://github.com/pfalcon/PeripheralTemplateLibrary).
+
+To build firmware, make sure that you have submodules initialized:
+
+git submodule update
+
+You will need gcc toolchain for your target architecture (msp430-gcc,
+avr-gcc, arm-gcc), etc. To flash compiled firmware, you will need
+one of the flash tools for your platform/board. See PTL documentation
+at the link above for more details on development environment setup.
+
+You can build firmware for a particular sub-architecture using:
+
+make TARGET=msp430
+
+Besides msp430, you can use avr, stm32, efm32, etc. See PTL
+documentation and makefiles for further details.
+
+OpenOCD with corresponding driver can be found at
+https://github.com/pfalcon/openocd/tree/simplejtag . To use it:
+
+git clone https://github.com/pfalcon/openocd openocd-simplejtag
+cd openocd-simplejtag
+git checkout simplejtag
+./configure --enable-simplejtag
+make
+
+Then use following openocd.cfg:
+-------------
+interface simplejtag_l0
+simplejtag_l0 port /dev/ttyACM0
+-------------
+
+
+WARNING AND DISCLAIMER
+Before connecting any other device to your board serving as a JTAG
+adapter, always consider difference in their voltage raiting - they
+should be compatible. Most of devices nowadays are powered by at most
+3.3V. Original AVR-based Arduino boards use legacy voltage of 5V.
+Using original Arduino will burn a device connected to it. There are
+reingeneered Arduino clones with ability to use contemporary 3.3V
+voltage. Note that there are devices which use even lower supply
+voltages.
+
+If in doubt, always consider that supply voltage, galvanic isolation,
+etc. are what differs professional $100+ adapter from using a low-cost
+board as such.
+
+Remember that SimpleJTAG (just as any other open-source software and
+hardware) comes without warranty of any kind and you use it at your
+own risk.
